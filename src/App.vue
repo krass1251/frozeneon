@@ -1,30 +1,35 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <form  @submit.prevent="search">
+    <label for="search">Search <input id="search" v-model="text" type="text"></label>
+  </form>
+  ------
+  <div v-for="result in results" :key="result.id">
+    {{result.package.name}}
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import axios from 'axios';
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default {
+  name: 'App',
+  data() {
+    return {
+      text: '',
+      results: [],
+    };
+  },
+  methods: {
+    async search() {
+      let response = {};
+      try {
+        response = await axios.get(`https://registry.npmjs.org/-/v1/search?text=${this.text}`);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        this.results = response?.data?.objects;
+      }
+    },
+  },
+};
+</script>
