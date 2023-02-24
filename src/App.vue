@@ -1,15 +1,20 @@
 <template>
-  <form  @submit.prevent="search">
-    <label for="search">Search <input id="search" v-model="text" type="text"></label>
+  <form @submit.prevent>
+    <label for="search">Search
+      <input id="search" v-model="text" @input="debouncedSearch" type="text">
+    </label>
   </form>
-  ------
+  <button @click="page--">prev</button>
+  <button @click="page++">next</button>
+  <br/>------
   <div v-for="result in results" :key="result.id">
-    {{result.package.name}}
+    {{ result.package.name }}
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import { getPackages } from '@/services/requestService';
+import debounce from '@/helpers/debounce';
 
 export default {
   name: 'App',
@@ -17,19 +22,27 @@ export default {
     return {
       text: '',
       results: [],
+      page: 0,
     };
+  },
+  watch: {
+    page() {
+      this.search();
+    },
   },
   methods: {
     async search() {
-      let response = {};
-      try {
-        response = await axios.get(`https://registry.npmjs.org/-/v1/search?text=${this.text}`);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        this.results = response?.data?.objects;
-      }
+      console.log('search');
+      this.results = await getPackages({
+        url: this.$store.state.apiUrl,
+        text: this.text,
+        from: this.page * this.$store.state.resultsOnPage,
+        size: this.$store.state.resultsOnPage,
+      });
     },
+  },
+  created() {
+    this.debouncedSearch = debounce(this.search, 200);
   },
 };
 </script>
