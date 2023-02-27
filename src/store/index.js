@@ -1,18 +1,16 @@
 import { createStore } from 'vuex';
+import packages from './packages';
 
 export default createStore({
   state: {
-    packageResults: [],
-    apiUrl: 'https://registry.npmjs.org/-/v1/search',
-    resultsOnPage: 10,
   },
   getters: {
   },
   mutations: {
-    setPackageResults: (state, results) => {
-      state.packageResults = results;
-    },
   },
   actions: {
+  },
+  modules: {
+    packages,
   },
 });

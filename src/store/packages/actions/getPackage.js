@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export async function getPackages(data) {
+async function getPackages({ commit }, data) {
   const {
     url, text, from, size,
   } = data;
@@ -12,10 +12,13 @@ export async function getPackages(data) {
 
   try {
     const response = await axios.get(`${url}?text=${text}&size=${size}${pagination}`);
-    return response?.data?.objects || [];
+    commit('setPackageResults', response?.data?.objects || []);
+    commit('setPackageResultsTotal', response?.data?.total || 0);
   } catch (e) {
     console.error(e);
-    return [];
+    commit('setPackageResults', []);
+    commit('setPackageResultsTotal', 0);
   }
 }
 
+export default getPackages;
