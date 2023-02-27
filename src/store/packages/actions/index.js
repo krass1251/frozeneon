@@ -1,6 +1,8 @@
-import getPackages from './getPackage';
+import getPackage from '@/store/packages/actions/getPackage';
+import getPackages from '@/store/packages/actions/getPackages';
 
 const actions = {
+  getPackage,
   getPackages,
 };
 

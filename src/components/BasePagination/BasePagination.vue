@@ -1,25 +1,34 @@
 <template>
-  <div>
-    <button @click="prevNextPage(-1)" :disabled="localPage === 0">prev</button>
-    <button
-      @click="prevNextPage(1)"
-      :disabled="localPage === lastPage"
+  <div class="d-flex justify-center mt-4" v-if="lastPage > 1">
+    <v-btn
+      class="ma-2 pa-2"
+      @click="prevNextPage(-1)"
+      :disabled="page === 0"
+      variant="outlined"
     >
-      next
-    </button>
+      &#60;
+    </v-btn>
+    <span class="ma-2 pa-2">{{ page + 1 }} of {{ lastPage }}</span>
+    <v-btn
+      class="ma-2 pa-2"
+      @click="prevNextPage(1)"
+      :disabled="page + 1  === lastPage"
+      variant="outlined"
+    >
+      &#62;
+    </v-btn>
   </div>
 </template>
 
 <script>
 export default {
   name: 'BasePagination',
-  data() {
-    return {
-      localPage: this.page,
-      lastPage: Math.floor(
-        this.$store.state.packages.packageResultsTotal / this.$store.state.packages.resultsOnPage,
-      ) - 1,
-    };
+  computed: {
+    lastPage() {
+      return Math.ceil(
+        this.$store.state.packages.packagesResultsTotal / this.$store.state.packages.resultsOnPage,
+      );
+    },
   },
   props: {
     items: {
@@ -37,14 +46,7 @@ export default {
   },
   methods: {
     prevNextPage(value) {
-      this.localPage += value;
-    },
-  },
-  watch: {
-    localPage(newPage) {
-      console.log('this.$store.state.packages.packageResultsTotal / this.$store.state.packages.resultsOnPage');
-      console.log(this.$store.state.packages.packageResultsTotal / this.$store.state.packages.resultsOnPage);
-      this.$emit('newPage', newPage);
+      this.$emit('newPage', this.page + value);
     },
   },
 };

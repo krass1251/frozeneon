@@ -1,7 +1,7 @@
-import getState from './state';
-import getters from './getters';
-import mutations from './mutations';
-import actions from './actions';
+import getState from '@/store/packages/state';
+import getters from '@/store/packages/getters';
+import mutations from '@/store/packages/mutations';
+import actions from '@/store/packages/actions';
 
 const packages = {
   namespaced: true,

@@ -1,9 +1,13 @@
 function state() {
   return {
-    packageResults: [],
-    packageResultsTotal: [],
-    apiUrl: 'https://registry.npmjs.org/-/v1/search',
+    packagesResults: [],
+    packageResult: {},
+    packagesResultsTotal: 0,
+    searchApiUrl: 'https://registry.npmjs.org/-/v1/search',
+    packageApiUrl: 'https://registry.npmjs.org',
     resultsOnPage: 10,
+    isLoading: false,
+    isPopupLoading: false,
   };
 }
 

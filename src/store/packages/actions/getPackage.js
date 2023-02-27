@@ -1,24 +1,20 @@
 import axios from 'axios';
 
-async function getPackages({ commit }, data) {
+async function getPackage({ commit }, data) {
   const {
-    url, text, from, size,
+    url, name,
   } = data;
-  let pagination = '';
-
-  if (from) {
-    pagination = `&from=${from}`;
-  }
 
   try {
-    const response = await axios.get(`${url}?text=${text}&size=${size}${pagination}`);
-    commit('setPackageResults', response?.data?.objects || []);
-    commit('setPackageResultsTotal', response?.data?.total || 0);
+    commit('setIsPopupLoading', true);
+    const response = await axios.get(`${url}/${name}`);
+    commit('setPackageResult', response?.data || {});
+    commit('setIsPopupLoading', false);
   } catch (e) {
     console.error(e);
-    commit('setPackageResults', []);
-    commit('setPackageResultsTotal', 0);
+    commit('setPackageResult', {});
+    commit('setIsPopupLoading', false);
   }
 }
 
-export default getPackages;
+export default getPackage;
