@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <app-header>
-      <packages-search class="ml-8" @searchInput="setText"/>
+      <packages-search class="ml-8 mr-4" @searchInput="setText"/>
     </app-header>
     <v-main>
       <packages-errors :text="text"/>

@@ -47,7 +47,7 @@ export default {
         },
         {
           name: 'mdi-youtube',
-          link: 'https://www.youtube.com/watch?v=f0SvTGnB3Ok',
+          link: 'https://youtu.be/690zClzXbck',
         },
       ],
     };
